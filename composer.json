@@ -1,0 +1,12 @@
+{
+  "name": "altmind/bill-dot-com-php-api",
+  "description": "Wrapper to Bill.com API",
+  "minimum-stability": "stable",
+  "license": "Apache 2.0 License",
+  "authors": [
+    {
+      "name": "Andrew Gurinovich",
+      "email": "altmind@example.com"
+    }
+  ]
+}
