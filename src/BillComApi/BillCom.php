@@ -50,6 +50,9 @@ class BillCom
     const BILL_PARTIALLY_PAID = 2;
     const BILL_SCHEDULED = 4;
 
+    const BILL_ENDPOINT_PRODUCTION = "https://api.bill.com/api/v2/";
+    const BILL_ENDPOINT_STAGING = "https://app-stage.bill.com/api/v2/";
+
     /**
      * Debug mode.
      * @var bool
@@ -223,7 +226,7 @@ class BillCom
         if (empty($options)) {
             $options = array('start' => 0, 'max' => 999,);
         }
-        return $this->do_request(
+        $result = $this->do_request(
             $this->host . "List/$obj_url.json",
             array(
                 'devKey' => $this->dev_key,
@@ -231,6 +234,17 @@ class BillCom
                 'data' => json_encode($options),
             )
         );
+        if ($result->succeeded()) {
+            return $result->get_data();
+        } else {
+            throw new BillComException(sprintf(
+                "Error during crud operation: '%s', on obj type: '%s', opts:\n%s\nresponse details:\n%s",
+                "List",
+                $obj_url,
+                var_export($options, true),
+                var_export($result, true)
+            ));
+        }
     }
 
     /**
@@ -300,6 +314,35 @@ class BillCom
         }
     }
 
+    /**
+     * Records bill external pay.
+     * @param array data payment data
+     * @return object result data
+     * @throws BillComException
+     */
+    public function record_bill_payed($data)
+    {
+        if (empty($this->session_id)) {
+            $this->login();
+        }
+        $result = $this->do_request(
+            $this->host . "RecordAPPayment.json",
+            array(
+                'devKey' => $this->dev_key,
+                'sessionId' => $this->session_id,
+                'data' => json_encode($data),
+            )
+        );
+        if ($result->succeeded()) {
+            return $result->get_data();
+        } else {
+            throw new BillComException(sprintf(
+                "Error during RecordAPPayment. data:\n%s\nresponse details:\n%s",
+                var_export($data, true),
+                var_export($result, true)
+            ));
+        }
+    }
     /**
      * Uploads an attachment to an object.
      *
