@@ -8,5 +8,10 @@
       "name": "Andrew Gurinovich",
       "email": "altmind@example.com"
     }
-  ]
+  ],
+  "autoload": {
+    "psr-0": {
+      "BillComApi": "src/"
+    }
+  }
 }
