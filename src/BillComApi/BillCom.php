@@ -473,4 +473,24 @@ class BillCom
         return $result;
     }
 
+    public function getSessionId()
+    {
+        return $this->session_id;
+    }
+
+    public function setSessionId($session_id)
+    {
+        $this->session_id = $session_id;
+    }
+
+    public function getOrgId()
+    {
+        return $this->org_id;
+    }
+
+    public function setOrgId($org_id)
+    {
+        $this->org_id = $org_id;
+    }
+
 }
