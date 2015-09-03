@@ -285,6 +285,18 @@ class BillCom
     }
 
     /**
+     * Deletes an object.
+     * @param string $obj_url object name
+     * @param string $obj_facts object data
+     * @return object result data
+     * @throws BillComException
+     */
+    public function delete($obj_url, $obj_id)
+    {
+        return $this->crud('Delete', $obj_url, array('id' => $obj_id));
+    }
+
+    /**
      * Pays a bill.
      * @param array data payment data
      * @return object result data
