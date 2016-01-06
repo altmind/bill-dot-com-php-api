@@ -305,7 +305,7 @@ class BillCom
      */
     public function approve_object($data)
     {
-        if ($data['entity'] != "Bill" || $data['entity'] != "VendorCredit") {
+        if ($data['entity'] != "Bill" && $data['entity'] != "VendorCredit") {
             throw new BillcomException("Invalid entity type.  Only Bill or VendorCredit is supported.");
         }
 
