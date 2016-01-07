@@ -297,6 +297,42 @@ class BillCom
     }
 
     /**
+     * Approve an object, can only be Bill or VendorCredit
+     * @param 
+     * @param array data object data
+     * @return object result data
+     * @throws BillComException
+     */
+    public function approve_object($data)
+    {
+        if ($data['entity'] != "Bill" && $data['entity'] != "VendorCredit") {
+            throw new BillcomException("Invalid entity type.  Only Bill or VendorCredit is supported.");
+        }
+
+        if (empty($this->session_id)) {
+            $this->login();
+        }
+
+        $result = $this->do_request(
+            $this->host . "Approve.json",
+            array(
+                'devKey' => $this->dev_key,
+                'sessionId' => $this->session_id,
+                'data' => json_encode($data),
+            )
+        );
+        if ($result->succeeded()) {
+            return $result->get_data();
+        } else {
+            throw new BillComException(sprintf(
+                "Error during Approve. data:\n%s\nresponse details:\n%s",
+                var_export($data, true),
+                var_export($result, true)
+            ));
+        }
+    } 
+
+    /**
      * Pays a bill.
      * @param array data payment data
      * @return object result data
