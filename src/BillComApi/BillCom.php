@@ -296,6 +296,39 @@ class BillCom
         return $this->crud('Delete', $obj_url, array('id' => $obj_id));
     }
 
+    public function set_approvers($data)
+    {
+        if ($data['entity'] != "Bill" && $data['entity'] != "VendorCredit") {
+            throw new BillcomException("Invalid entity type.  Only Bill or VendorCredit is supported.");
+        }
+
+        if (count($data['approvers']) < 1) {
+            throw new BillcomException("Approvers are required.");
+        }
+
+        if (empty($this->session_id)) {
+            $this->login();
+        }
+
+        $result = $this->do_request(
+            $this->host . "SetApprovers.json",
+            array(
+                'devKey' => $this->dev_key,
+                'sessionId' => $this->session_id,
+                'data' => json_encode($data),
+            )
+        );
+        if ($result->succeeded()) {
+            return $result->get_data();
+        } else {
+            throw new BillComException(sprintf(
+                "Error during SetApprovers. data:\n%s\nresponse details:\n%s",
+                var_export($data, true),
+                var_export($result, true)
+            ));
+        }
+    }
+
     /**
      * Approve an object, can only be Bill or VendorCredit
      * @param 
