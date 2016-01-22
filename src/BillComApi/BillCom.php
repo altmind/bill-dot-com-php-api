@@ -296,7 +296,7 @@ class BillCom
         return $this->crud('Delete', $obj_url, array('id' => $obj_id));
     }
 
-    public function set_approver($data)
+    public function set_approvers($data)
     {
         if ($data['entity'] != "Bill" && $data['entity'] != "VendorCredit") {
             throw new BillcomException("Invalid entity type.  Only Bill or VendorCredit is supported.");
